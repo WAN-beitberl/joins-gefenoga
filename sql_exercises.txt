@@ -1,0 +1,242 @@
+1. 
+SELECT salesman.name, customer.cust_name, customer.city 
+FROM salesman,customer 
+WHERE salesman.city=customer.city;
+
+2.
+select orders.ord_no, orders.purch_amt, costumer.cust_name, costumer.city
+from orders, costumer 
+where orders.costumer_id = costumer.costumer_id
+AND orders.putch_amt BETWEEN 500 AND 2000
+
+3.
+select costumer.cust_name AS "Costumer Name", 
+salesman.city,
+salesman.name AS "Salesman", 
+salesman.comission
+from costumer INNER JOIN salesman 
+ON salesman.salesman_id = costumer.salesman_id
+
+4.
+select customer.cust_id AS "Customer Name",
+customer.city AS "customer city",
+salesman.name AS "Salesman"
+salesman.commission
+from customer INNER JOIN salesman
+ON salesman.salesman_id = customer.salesman_id
+AND salesman.commission > 0.12
+
+5.
+select customer.cust_id AS "Customer Name",
+customer.city AS "customer city",
+salesman.name AS "Salesman"
+salesman.commission
+from customer INNER JOIN salesman
+ON salesman.salesman_id = customer.salesman_id
+WHERE salesman.commission > 0.12
+AND salesman.city <> customer.city
+
+6.
+select orders.ord_no, orders.ord_date, orders.purch_amt,
+customer.cust_id AS "Customer Name",
+customer.grade,
+salesman.name AS "Salesman"
+salesman.commission
+from orders INNER JOIN customer
+ON orders.custumer_id = customer.customer_id
+INNER JOIN salesman
+ON orders.salesman_id = salesman.salesman_id
+
+7.
+SELECT * 
+FROM orders 
+NATURAL JOIN customer  
+NATURAL JOIN salesman;
+
+8.
+select customer.cust_name,
+customer.city,
+customer.grade,
+salesman.name AS "salesman",
+salesman.city AS "salesman city"
+from customer INNER JOIN salesman
+ON customer.salesman_id = salesman.salesman_id
+ORDER BY customer.customer_id 
+
+9.
+select customer.cust_name,
+customer.city,
+customer.grade,
+salesman.name AS "Salesman",
+salesman.city AS "salesman city"
+from customer INNER JOIN salesman
+ON customer.salesman_id = salesman.salesman_id
+WHERE customer.grade < 300
+ORDER BY customer.customer_id 
+
+10.
+select customer.cust_name,
+customer.city,
+orders.ord_no,
+orders.ord_date,
+orders.purch_amt
+from customer LEFT JOIN orders
+ON customer.customer_id = orders.customer_id
+ORDER BY orders.ord_date 
+
+11.
+SELECT a.cust_name,a.city, b.ord_no,
+b.ord_date,b.purch_amt AS "Order Amount", 
+c.name,c.commission 
+FROM customer a 
+LEFT OUTER JOIN orders b 
+ON a.customer_id=b.customer_id 
+LEFT OUTER JOIN salesman c 
+ON c.salesman_id=b.salesman_id;
+
+12.
+SELECT a.cust_name,a.city,a.grade, 
+b.name AS "Salesman", b.city 
+FROM customer a 
+RIGHT OUTER JOIN salesman b 
+ON b.salesman_id=a.salesman_id 
+ORDER BY b.salesman_id;
+
+13.
+SELECT a.cust_name,a.city,a.grade, 
+b.name AS "Salesman", 
+c.ord_no, c.ord_date, c.purch_amt 
+FROM customer a 
+RIGHT OUTER JOIN salesman b 
+ON b.salesman_id=a.salesman_id 
+RIGHT OUTER JOIN orders c 
+ON c.customer_id=a.customer_id;
+
+14.
+SELECT a.cust_name,a.city,a.grade, 
+b.name AS "Salesman", 
+c.ord_no, c.ord_date, c.purch_amt 
+FROM customer a 
+RIGHT OUTER JOIN salesman b 
+ON b.salesman_id=a.salesman_id 
+LEFT OUTER JOIN orders c 
+ON c.customer_id=a.customer_id 
+WHERE c.purch_amt>=2000 
+AND a.grade IS NOT NULL;
+
+15.
+SELECT a.cust_name,a.city,a.grade, 
+b.name AS "Salesman", 
+c.ord_no, c.ord_date, c.purch_amt 
+FROM customer a 
+RIGHT OUTER JOIN salesman b 
+ON b.salesman_id=a.salesman_id 
+LEFT OUTER JOIN orders c 
+ON c.customer_id=a.customer_id 
+WHERE c.purch_amt>=2000 
+AND a.grade IS NOT NULL;
+
+16.
+
+SELECT a.cust_name AS "customer name",
+a.city, b.ord_no AS "order no.",
+b.ord_date AS "order date",
+b.purch_amt AS "purchase amount"
+from customer a FULL OUTER JOIN orders b
+ON a.customer_id = b.customer_id
+WHERE a.grade IS NOT NULL;
+
+17.
+SELECT * FROM salesman CROSS JOIN customer
+
+18.
+SELECT * from salesman a CROSS JOIN customer b
+WHERE a.city IS NOT NULL
+
+19.
+SELECT *
+from salesman a CROSS JOIN customer b
+WHERE a.city IS NOT NULL
+AND b.grade IS NOT NULL
+
+20.
+SELECT *
+from salesman a CROSS JOIN customer b
+WHERE a.city IS NOT NULL
+AND b.grade IS NOT NULL
+AND a.city <> b.city
+
+21.
+SELECT * from item_mast a 
+FULL OUTER JOIN company_mast b
+ON a.PRO_COM = b.COM_ID
+
+22.
+SELECT a.PRO_NAME AS "item name", a.PRO_PRICE as "price",
+b.COM_NAME AS "company name" 
+from item_mast a
+INNER JOIN company_mast b
+ON a.PRO_COM = b.COM_ID
+
+23.
+
+SELECT avg(a.PRO_PRICE), b.COM_NAME
+from company_mast b 
+JOIN item_mast a
+ON b.COM_ID = a.PRO_COM
+GROUP BY b.com_name
+
+24.
+
+SELECT avg(a.PRO_PRICE), b.COM_NAME
+from company_mast b 
+JOIN item_mast a
+ON b.COM_ID = a.PRO_COM
+GROUP BY b.com_name
+HAVING AVG(pro_price) >= 350
+
+25.
+
+SELECT a.PRO_NAME, a.PRO_PRICE, b.COM_NAME
+from company_mast b 
+JOIN item_mast a
+ON b.COM_ID = a.PRO_COM
+AND a.pro_price = (SELECT MAX(a.pro_price) from 
+item_mast a WHERE b.COM_ID = a.PRO_COM)
+
+26.
+SELECT * from emp_details 
+JOIN emp_department
+on emp_details.EMP_DEPT = emp_department.DPT_CODE
+
+27.
+SELECT a.EMP_FNAME AS "first name", 
+a.EMP_LNAME AS "last name",
+b.DPT_NAME AS "department name",
+b.DPT_ALLOTMENT AS "sanction amount"
+from emp_details a 
+JOIN emp_department b
+on a.EMP_DEPT = b.DPT_CODE
+
+28.
+SELECT a.DPT_NAME AS "department name",
+b.EMP_FNAME AS "first name", 
+b.EMP_LNAME AS "last name"
+from emp_department a
+JOIN emp_details b
+on a.DPT_CODE = b.EMP_DEPT
+WHERE a.DPT_ALLOTMENT > 50000
+
+29.
+SELECT b.DPT_NAME AS "department name"
+from emp_details a
+JOIN emp_department b
+on a.EMP_DEPT = b.DPT_CODE
+group by b.dpt_name
+having count(*) > 2
+
+
+
+
+
+
